@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--<generatorConfiguration>-->
+    <!--&lt;!&ndash; 导入配置文件 &ndash;&gt;-->
+    <!--<properties resource="application.properties"/>-->
+
+    <!--&lt;!&ndash; defaultModelType="flat" 设置复合主键时不单独为主键创建实体 &ndash;&gt;-->
+    <!--<context id="MySql" defaultModelType="flat">-->
+
+        <!--&lt;!&ndash; 生成的POJO实现java.io.Serializable接口 &ndash;&gt;-->
+        <!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />-->
+
+        <!--&lt;!&ndash;注释&ndash;&gt;-->
+        <!--<commentGenerator>-->
+            <!--&lt;!&ndash; 将数据库中表的字段描述信息添加到注释 &ndash;&gt;-->
+            <!--<property name="addRemarkComments" value="true"/>-->
+            <!--&lt;!&ndash; 注释里不添加日期 &ndash;&gt;-->
+            <!--<property name="suppressDate" value="true"/>-->
+        <!--</commentGenerator>-->
+        <!--&lt;!&ndash; 数据库连接，直接通过${}读取application.properties里的配置 &ndash;&gt;-->
+        <!--<jdbcConnection-->
+                <!--driverClass="${spring.datasource.driver-class-name}"-->
+                <!--connectionURL="${spring.datasource.url}"-->
+                <!--userId="${spring.datasource.username}"-->
+                <!--password="${spring.datasource.password}"/>-->
+
+        <!--&lt;!&ndash; 生成POJO对象，并将类放到com.songguoliang.springboot.entity包下 &ndash;&gt;-->
+        <!--<javaModelGenerator targetPackage="com.yichip.springboot.pojo" targetProject="src/main/java"></javaModelGenerator>-->
+        <!--&lt;!&ndash; 生成mapper xml文件，并放到resources下的mapper文件夹下 &ndash;&gt;-->
+        <!--<sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources"></sqlMapGenerator>-->
+
+
+        <!--&lt;!&ndash; 生成mapper xml对应dao接口，放到com.songguoliang.springboot.mapper包下&ndash;&gt;-->
+        <!--<javaClientGenerator targetPackage="com.yichip.springboot.mapper" targetProject="src/main/java" type="XMLMAPPER"></javaClientGenerator>-->
+
+        <!--&lt;!&ndash; table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 &ndash;&gt;-->
+        <!--<table tableName="t_user" domainObjectName="User"></table>-->
+    <!--</context>-->
+<!--</generatorConfiguration>-->
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="application.properties"/>
+    <!--context配置一组对象的环境  -->
+    <!-- property*,plugin*,commentGenerator?,jdbcConnection,javaTypeResolver?,
+        javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table -->
+    <context id="mysql"  targetRuntime="MyBatis3Simple" >
+
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；
+           一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖
+        -->
+        <property name="autoDelimitKeywords" value="false"/>
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 生成的pojo，将implements Serializable -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+
+        <!-- 注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" /><!-- 是否取消注释 -->
+            <!-- <property name="suppressDate" value="true" />  是否生成注释代时间戳 -->
+        </commentGenerator>
+
+        <!--jdbc的数据库连接 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!--类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- java模型创建器，是必须要的元素
+                   负责：1，key类（见context的defaultModelType）；2，java类；3，查询类
+           targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制；
+           targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录
+        -->
+        <javaModelGenerator targetPackage="com.yichip.springboot.pojo" targetProject="./src/main/java">
+            <!-- 是否对model添加 构造函数 -->
+            <property name="constructorBased" value="true"/>
+
+            <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
+            <property name="enableSubPackages" value="false"/>
+
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+
+            <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
+            <property name="immutable" value="false"/>
+
+            <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--对应的mapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 对应的Mapper接口类文件 -->
+        <!--<javaClientGenerator type="XMLMAPPER"-->
+                             <!--targetPackage="com.yichip.springboot.mapper" targetProject="./src/main/java">-->
+            <!--<property name="enableSubPackages" value="false" />-->
+        <!--</javaClientGenerator>-->
+
+        <!--不生成mapper.xml,在mapper.java生成注解代替xml  -->
+        <javaClientGenerator targetPackage="com.yichip.springboot.mapper" targetProject="src/main/java"
+                           type="ANNOTATEDMAPPER">
+        </javaClientGenerator>
+
+        <!-- <table tableName="equip" domainObjectName="Equip"></table> -->
+        <!-- <table tableName="e_user" domainObjectName="User"></table> -->
+        <!-- <table tableName="e_record" domainObjectName="Record"></table> -->
+        <!-- <table tableName="phone" domainObjectName="Phone"></table> -->
+        <!-- <table tableName="p_record" domainObjectName="Precord"></table> -->
+        <!--<table tableName="command" domainObjectName="Command"></table> -->
+        <!--<table tableName="user_equip" domainObjectName="UserEquip"></table >-->
+        <!--<table tableName="headset_update" domainObjectName="headsetUpdate"></table >-->
+        <table tableName="user" domainObjectName="User"></table >
+
+    </context>
+</generatorConfiguration>
