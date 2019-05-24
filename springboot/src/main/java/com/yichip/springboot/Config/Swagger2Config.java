@@ -3,6 +3,7 @@ package com.yichip.springboot.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -13,13 +14,14 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @Description TODO
+ * @Description swagger2配置类 http://localhost:8080/swagger-ui.html
  * @Author ocean
- * @Date 2019/5/2312:59
+ * @Date 2019/5/23 12:59
  **/
 @EnableSwagger2
 @Configuration
-public class SwaggerConfig {
+@Profile({"dev","test"})
+public class Swagger2Config {
     //是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
     @Value(value = "${swagger.enabled}")
     Boolean swaggerEnabled;
@@ -37,11 +39,12 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot-Swagger2集成和使用-demo示例")
-                .description("oKong | 趔趄的猿")
+                .title("SpringBoot模板项目")
+                .description("纯净的springboot模板项目,便于日后开始直接套用")
                 // 作者信息
-                .contact(new Contact("oKong", "https://blog.lqdev.cn/", "499452441@qq.com"))
+                .contact(new Contact("ocean", null, "null"))
                 .version("1.0.0")
                 .build();
     }
+
 }
